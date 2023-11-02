@@ -1,0 +1,22 @@
+---
+- name: Check if the file exists
+  stat:
+    path: "{{ deploy_path }}/{{ item }}"
+  register: file_exists
+  loop: "{{ files_to_deploy }}"
+
+- name: Rename the file if it already exists
+  command: >
+    mv "{{ deploy_path }}/{{ item.item }}" "{{ deploy_path }}/{{ item.item | replace('.php', '') }}_{{ ansible_date_time.date }}.php"
+  when: item.stat.exists
+  loop: "{{ file_exists.results }}"
+  vars:
+    file_name: "{{ item.item }}"  # Define the file_name variable
+
+- name: Copy the new file to the server
+  copy:
+    src: "/root/api_deployment/roles/deploy_file/files/{{ deployment_type }}/{{ deployment_date }}/{{ item }}"
+    dest: "{{ deploy_path }}/{{ item }}"
+  loop: "{{ files_to_deploy }}"
+  notify:
+    - Set permissions

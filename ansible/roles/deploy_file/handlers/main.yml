@@ -1,0 +1,6 @@
+---
+- name: Set permissions
+  shell: |
+    sudo chown "{{ file_owner }}:{{ file_group }}" "{{ deploy_path }}/{{ item }}" &&
+    sudo chmod "{{ file_mode }}" "{{ deploy_path }}/{{ item }}"
+  loop: "{{ files_to_deploy }}"

@@ -1,0 +1,16 @@
+---
+- name: Deploy to locationA set1
+  hosts: locationA_set1  ## adjust this for the list of hosts
+  become: true
+  vars:
+    deployment_type: set1
+    deploy_path: /var/www/html
+    files_to_deploy:
+      - fileA.php
+      - fileB.php
+    file_mode: "0664"
+    file_owner: "asterisk"
+    file_group: "asterisk"
+    deployment_date: "20231018"
+  roles:
+    - deploy_file

@@ -1,0 +1,17 @@
+---
+- name: Deploy to locationA set2
+  hosts: locationA_set2
+  become: true
+  vars:
+    deployment_type: set2
+    deploy_path: /srv/www/htdocs/agc
+    files_to_deploy:
+      - fileC.php
+      - fileD.php
+    file_mode: "0755"
+    file_owner: "root"
+    file_group: "root"
+    deployment_date: "20231018"
+  roles:
+    - deploy_file
+
